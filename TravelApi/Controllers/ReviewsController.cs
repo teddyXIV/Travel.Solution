@@ -44,20 +44,12 @@ namespace TravelApi.Controllers
                 query = query.Where(entry => entry.ReviewId == randomId);
             }
 
-            int pageCount = query.Count();
             int pageSize = 1;
             int currentPage = page ?? 1;
 
-            List<Review> reviews = await query
-                .Skip((currentPage - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            var pagedReviews = PagedList<Review>.ToPagedList(query, currentPage, pageSize);
 
-            PagedList<Review> response = new(reviews, pageCount, currentPage, pageSize);
-
-            return Ok(reviews);
-
-            // return await query.ToListAsync();
+            return Ok(pagedReviews);
         }
 
 
