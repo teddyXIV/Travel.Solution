@@ -17,12 +17,13 @@ namespace TravelApi.Controllers
 
         // GET: api/Reviews
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviews(string country, string city, int minimumRating, int rando)
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviews(string country, string city, int minimumRating, int rando, int? page)
         {
             var query = _context.Reviews.AsQueryable();
 
             if (country != null)
             {
+
                 query = query.Where(entry => entry.Country == country);
             }
 
@@ -43,7 +44,20 @@ namespace TravelApi.Controllers
                 query = query.Where(entry => entry.ReviewId == randomId);
             }
 
-            return await query.ToListAsync();
+            int pageCount = query.Count();
+            int pageSize = 1;
+            int currentPage = page ?? 1;
+
+            List<Review> reviews = await query
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            PagedList<Review> response = new(reviews, pageCount, currentPage, pageSize);
+
+            return Ok(reviews);
+
+            // return await query.ToListAsync();
         }
 
 
