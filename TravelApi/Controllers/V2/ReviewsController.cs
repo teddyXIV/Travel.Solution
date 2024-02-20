@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TravelApi.Models;
 
-namespace TravelApi.Controllers
+namespace TravelApi.Controllers.V2
 {
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ReviewsController : ControllerBase
     {
@@ -44,7 +45,7 @@ namespace TravelApi.Controllers
                 query = query.Where(entry => entry.ReviewId == randomId);
             }
 
-            int pageSize = 1;
+            int pageSize = 2;
             int currentPage = page ?? 1;
 
             var pagedReviews = PagedList<Review>.ToPagedList(query, currentPage, pageSize);
