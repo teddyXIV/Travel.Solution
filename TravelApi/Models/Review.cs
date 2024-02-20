@@ -13,7 +13,5 @@ public class Review
     public int Rating { get; set; }
     [Required]
     public string Description { get; set; }
-    public User User { get; set; }
-    [Required]
-    public int UserId { get; set; }
+    public ApplicationUser User { get; set; }
 }
