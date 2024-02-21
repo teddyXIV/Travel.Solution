@@ -45,7 +45,7 @@ namespace TravelApi.Controllers.V1
                 query = query.Where(entry => entry.ReviewId == randomId);
             }
 
-            int pageSize = 1;
+            int pageSize = 3;
             int currentPage = page ?? 1;
 
             var pagedReviews = PagedList<Review>.ToPagedList(query, currentPage, pageSize);
